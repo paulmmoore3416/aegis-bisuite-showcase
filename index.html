@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AEGIS BISuite — A self-hosted, zero-overhead SaaS platform generating multiple revenue streams, built and operated by Paul Moore.">
+  <title>AEGIS BISuite | Paul Moore — Platform Engineer & BI Architect</title>
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --surface: #111827;
+      --border: #1f2937;
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --accent: #3b82f6;
+      --gold: #f59e0b;
+      --green: #22c55e;
+      --purple: #a855f7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Segoe UI', system-ui, sans-serif; line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: radial-gradient(ellipse at top, #1e3a5f22 0%, transparent 70%);
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231f2937' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.3;
+    }
+    .logo-badge {
+      width: 80px; height: 80px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; font-weight: 900; color: var(--gold);
+      margin-bottom: 2rem;
+      box-shadow: 0 0 40px #3b82f640;
+      position: relative;
+    }
+    .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; letter-spacing: -0.02em; margin-bottom: 1rem; }
+    .hero h1 span { color: var(--gold); }
+    .hero p { font-size: 1.25rem; color: var(--muted); max-width: 640px; margin-bottom: 2.5rem; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-bottom: 3rem; }
+    .tag {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); font-size: 0.8rem; padding: 0.35rem 0.85rem; border-radius: 9999px;
+    }
+    .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      padding: 0.75rem 2rem; border-radius: 10px; font-size: 1rem; font-weight: 600;
+      cursor: pointer; border: none; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
+    .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--surface); }
+
+    /* SECTION */
+    section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .section-label { color: var(--accent); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem; }
+    .section-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; }
+    .section-sub { color: var(--muted); font-size: 1.05rem; margin-bottom: 3rem; max-width: 600px; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* STATS BAR */
+    .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .stat-item { background: var(--surface); padding: 2rem 1.5rem; text-align: center; }
+    .stat-num { font-size: 2.5rem; font-weight: 900; color: var(--gold); }
+    .stat-lbl { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; }
+
+    /* PRODUCT GRID */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .product-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+      padding: 1.75rem; transition: all 0.2s;
+    }
+    .product-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 20px 40px #0003; }
+    .product-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .product-name { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .product-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; }
+    .product-meta { display: flex; justify-content: space-between; font-size: 0.8rem; }
+    .product-price { color: var(--green); font-weight: 600; }
+    .product-mrr { color: var(--muted); }
+
+    /* ARCH DIAGRAM */
+    .arch-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; font-family: 'Courier New', monospace; font-size: 0.82rem; color: #a5b4fc; white-space: pre; overflow-x: auto; line-height: 1.8; }
+
+    /* TECH STACK */
+    .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; }
+    .tech-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; text-align: center; }
+    .tech-item .tech-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+    .tech-item .tech-name { font-size: 0.8rem; color: var(--muted); }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+    .skill-list { list-style: none; space-y: 0.5rem; }
+    .skill-list li { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: var(--muted); }
+    .skill-list li::before { content: '▸'; color: var(--accent); }
+
+    /* FOOTER */
+    footer { text-align: center; padding: 3rem 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; }
+    footer strong { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<!-- ─── HERO ──────────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="logo-badge">Æ</div>
+  <h1>AEGIS <span>BISuite</span></h1>
+  <p>A self-hosted, zero-cloud-cost SaaS platform — 7 revenue-generating products, 1 unified admin dashboard, built from scratch on Ubuntu.</p>
+  <div class="hero-tags">
+    <span class="tag">FastAPI · Python</span>
+    <span class="tag">React 18 · TypeScript</span>
+    <span class="tag">Docker Compose</span>
+    <span class="tag">PostgreSQL · Redis</span>
+    <span class="tag">Ollama LLM</span>
+    <span class="tag">Stripe Payments</span>
+    <span class="tag">Cloudflare Tunnel</span>
+    <span class="tag">Nginx Reverse Proxy</span>
+  </div>
+  <div class="cta-row">
+    <a href="https://github.com/paulmmoore3416/Moore-Family-Businesses-BI-Suite" target="_blank" class="btn btn-primary">
+      ⭐ View on GitHub
+    </a>
+    <a href="#products" class="btn btn-secondary">
+      See the Products ↓
+    </a>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ─── STATS ─────────────────────────────────────────────────────────────── -->
+<section>
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-num">7</div><div class="stat-lbl">SaaS Products</div></div>
+    <div class="stat-item"><div class="stat-num">$0</div><div class="stat-lbl">Monthly Infrastructure Cost</div></div>
+    <div class="stat-item"><div class="stat-num">$3,929</div><div class="stat-lbl">Target MRR (Conservative)</div></div>
+    <div class="stat-item"><div class="stat-num">99.6%</div><div class="stat-lbl">Platform Uptime</div></div>
+    <div class="stat-item"><div class="stat-num">1</div><div class="stat-lbl">Unified Admin Dashboard</div></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─── PRODUCTS ──────────────────────────────────────────────────────────── -->
+<section id="products">
+  <div class="section-label">Revenue Streams</div>
+  <div class="section-title">7 Products. Zero Cloud Bills.</div>
+  <p class="section-sub">Every product runs on self-hosted hardware using free and open-source tools. All LLM inference runs locally via Ollama — no OpenAI API costs.</p>
+
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-icon">🤖</div>
+      <div class="product-name">AI Resume SaaS</div>
+      <div class="product-desc">Paste a job description → receive a tailored resume and cover letter in seconds. Powered by local Llama 3.2 — no data leaves the server.</div>
+      <div class="product-meta">
+        <span class="product-price">$9–$29/mo</span>
+        <span class="product-mrr">Est. $450–$1,450 MRR</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-icon">🏪</div>
+      <div class="product-name">Digital Products Store</div>
+      <div class="product-desc">Sell PDF guides, Notion templates, and spreadsheet tools. Instant delivery via Stripe + MinIO object storage.</div>
+      <div class="product-meta">
+        <span class="product-price">$7–$47 one-time</span>
+        <span class="product-mrr">Est. $210–$1,410 MRR</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-icon">⚙️</div>
+      <div class="product-name">Automation Agency</div>
+      <div class="product-desc">n8n-powered workflow automation packages for small businesses. Fixed-scope projects delivered and hosted on this platform.</div>
+      <div class="product-meta">
+        <span class="product-price">$500–$2,500/project</span>
+        <span class="product-mrr">Est. $1,000–$5,000 MRR</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-icon">📚</div>
+      <div class="product-name">Homeschool Hub</div>
+      <div class="product-desc">Subscription community and AI-assisted curriculum guides for homeschooling families. Built by a homeschooling parent for homeschooling parents.</div>
+      <div class="product-meta">
+        <span class="product-price">$7–$19/mo</span>
+        <span class="product-mrr">Est. $700–$1,900 MRR</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-icon">🔐</div>
+      <div class="product-name">Security Audit Generator</div>
+      <div class="product-desc">AI-generated PDF security reports for SMBs. Server info in → professional security report out. Local LLM, data stays private.</div>
+      <div class="product-meta">
+        <span class="product-price">$29–$99/report</span>
+        <span class="product-mrr">Est. $580–$1,980 MRR</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-icon">📊</div>
+      <div class="product-name">BI Dashboard SaaS</div>
+      <div class="product-desc">White-labeled Apache Superset dashboards for small business clients. Connect their data, deliver beautiful embedded analytics.</div>
+      <div class="product-meta">
+        <span class="product-price">$49–$199/mo</span>
+        <span class="product-mrr">Est. $490–$1,990 MRR</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-icon">🔔</div>
+      <div class="product-name">Crypto Alert Bot</div>
+      <div class="product-desc">Price and on-chain alerts delivered via Telegram and email. Set it, forget it. Self-hosted, no third-party per-notification costs.</div>
+      <div class="product-meta">
+        <span class="product-price">$4.99–$14.99/mo</span>
+        <span class="product-mrr">Est. $499–$1,499 MRR</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─── ARCHITECTURE ───────────────────────────────────────────────────────── -->
+<section id="architecture">
+  <div class="section-label">Engineering</div>
+  <div class="section-title">The Architecture</div>
+  <p class="section-sub">Single server. Cloudflare Tunnel (no open ports). Nginx reverse proxy routing all 7 apps. Docker Compose orchestration.</p>
+  <div class="arch-box">
+Internet → Cloudflare Tunnel → Nginx Reverse Proxy (:80/:443)
+            │
+            ├── /admin       → React 18 + Vite Admin Dashboard       :3000
+            ├── /resume      → FastAPI + Ollama Llama 3.2             :8001
+            ├── /store       → SvelteKit + Stripe + MinIO             :8002
+            ├── /automate    → n8n Workflow Engine                    :5678
+            ├── /homeschool  → FastAPI + Ghost CMS                    :8003
+            ├── /secaudit    → FastAPI + Ollama + WeasyPrint PDF       :8004
+            ├── /alerts      → Node.js + Telegram Bot + CoinGecko     :8005
+            └── /dashboards  → Apache Superset                        :8088
+
+Shared Infrastructure:
+  PostgreSQL 16  (8 databases, one per service)
+  Redis 7        (session, cache, queue)
+  MinIO          (S3-compatible object storage)
+  Ollama         (local LLM: Llama 3.2, GPU-accelerated)
+  Prometheus + Grafana + Loki  (monitoring & alerting)
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─── TECH STACK ─────────────────────────────────────────────────────────── -->
+<section>
+  <div class="section-label">Tech Stack</div>
+  <div class="section-title">Built with Best-in-Class OSS</div>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-icon">⚛️</div><div class="tech-name">React 18</div></div>
+    <div class="tech-item"><div class="tech-icon">🐍</div><div class="tech-name">FastAPI</div></div>
+    <div class="tech-item"><div class="tech-icon">🦙</div><div class="tech-name">Ollama LLM</div></div>
+    <div class="tech-item"><div class="tech-icon">🐘</div><div class="tech-name">PostgreSQL</div></div>
+    <div class="tech-item"><div class="tech-icon">⚡</div><div class="tech-name">Redis</div></div>
+    <div class="tech-item"><div class="tech-icon">🐋</div><div class="tech-name">Docker</div></div>
+    <div class="tech-item"><div class="tech-icon">☁️</div><div class="tech-name">Cloudflare</div></div>
+    <div class="tech-item"><div class="tech-icon">🔀</div><div class="tech-name">Nginx</div></div>
+    <div class="tech-item"><div class="tech-icon">💳</div><div class="tech-name">Stripe</div></div>
+    <div class="tech-item"><div class="tech-icon">📦</div><div class="tech-name">MinIO</div></div>
+    <div class="tech-item"><div class="tech-icon">📊</div><div class="tech-name">Grafana</div></div>
+    <div class="tech-item"><div class="tech-icon">⚙️</div><div class="tech-name">n8n</div></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─── ABOUT ─────────────────────────────────────────────────────────────── -->
+<section id="about">
+  <div class="section-label">About</div>
+  <div class="section-title">Built by Paul Moore</div>
+  <div class="about-grid">
+    <div>
+      <p style="color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem;">
+        Software engineer, BI analyst, and platform architect based in St. Louis, MO.
+        AEGIS BISuite was designed and built to generate sustainable family income while
+        homeschooling two kids — proving that <strong>you don't need venture capital or cloud
+        bills to build real revenue-generating software products.</strong>
+      </p>
+      <p style="color: var(--muted); line-height: 1.8;">
+        Every line of code, every architecture decision, and every revenue stream was
+        researched, designed, and implemented independently — running on a single self-hosted
+        machine with <strong>$0/month in infrastructure costs.</strong>
+      </p>
+    </div>
+    <div>
+      <ul class="skill-list">
+        <li>Full-Stack Engineering (Python · TypeScript · React)</li>
+        <li>Platform & SaaS Architecture</li>
+        <li>Business Intelligence & Data Analytics</li>
+        <li>DevOps · Docker · CI/CD · GitHub Actions</li>
+        <li>AI/ML Integration (LLM, Ollama, RAG)</li>
+        <li>Database Design (PostgreSQL, Redis)</li>
+        <li>Payment Integration (Stripe)</li>
+        <li>Security Engineering & Hardening</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ─── FOOTER ─────────────────────────────────────────────────────────────── -->
+<footer>
+  <p><strong>AEGIS BISuite</strong> · Moore Family Businesses · St. Louis, MO</p>
+  <p style="margin-top: 0.5rem;">
+    <a href="https://github.com/paulmmoore3416/Moore-Family-Businesses-BI-Suite">GitHub</a> ·
+    <a href="mailto:paulmmoore3416@gmail.com">Contact</a>
+  </p>
+  <p style="margin-top: 1rem; font-size: 0.75rem;">Built with ❤️ — Ancient Strength, Modern Revenue</p>
+</footer>
+
+</body>
+</html>
